@@ -94,15 +94,16 @@
 
 
 
-<meta name="description" content="也许是真的无聊">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Mr.Shen">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="JavaScript中数组排序 sort 方法的参数是一个函数，sort 的排序实现是根据该函数的返回值进行的。若 a 小于 b，在排序后的数组中 a 应该出现在 b 之前，则返回一个小于 0 的值。若 a 等于 b，则返回 0。若 a 大于 b，则返回一个大于 0 的值。如果数组中包含字符串则按照每项首字母在ASCII码表中的大小进行排序 自定义的排序方法 arraySortarraySort(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一种数组多项排序的实现">
+<meta property="og:url" content="http://yoursite.com/2017/09/11/ArraySort/index.html">
 <meta property="og:site_name" content="Mr.Shen">
-<meta property="og:description" content="也许是真的无聊">
+<meta property="og:description" content="JavaScript中数组排序 sort 方法的参数是一个函数，sort 的排序实现是根据该函数的返回值进行的。若 a 小于 b，在排序后的数组中 a 应该出现在 b 之前，则返回一个小于 0 的值。若 a 等于 b，则返回 0。若 a 大于 b，则返回一个大于 0 的值。如果数组中包含字符串则按照每项首字母在ASCII码表中的大小进行排序 自定义的排序方法 arraySortarraySort(">
+<meta property="og:updated_time" content="2017-09-16T13:52:51.563Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mr.Shen">
-<meta name="twitter:description" content="也许是真的无聊">
+<meta name="twitter:title" content="一种数组多项排序的实现">
+<meta name="twitter:description" content="JavaScript中数组排序 sort 方法的参数是一个函数，sort 的排序实现是根据该函数的返回值进行的。若 a 小于 b，在排序后的数组中 a 应该出现在 b 之前，则返回一个小于 0 的值。若 a 等于 b，则返回 0。若 a 大于 b，则返回一个大于 0 的值。如果数组中包含字符串则按照每项首字母在ASCII码表中的大小进行排序 自定义的排序方法 arraySortarraySort(">
 
 
 
@@ -131,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/11/ArraySort/"/>
 
 
 
 
 
-  <title>Mr.Shen</title>
+  <title>一种数组多项排序的实现 | Mr.Shen</title>
   
 
 
@@ -156,9 +157,7 @@
     
   
 
-  <div class="container sidebar-position-right 
-   page-home 
- ">
+  <div class="container sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,9 +250,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -283,9 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/11/ArraySort/" itemprop="url">一种数组多项排序的实现</a></h1>
+          <h1 class="post-title" itemprop="name headline">一种数组多项排序的实现</h1>
         
 
         <div class="post-meta">
@@ -335,20 +332,14 @@
       
 
       
-        
-          <p>JavaScript中数组排序 sort 方法的参数是一个函数，sort 的排序实现是根据该函数的返回值进行的。<br>若 a 小于 b，在排序后的数组中 a 应该出现在 b 之前，则返回一个小于 0 的值。<br>若 a 等于 b，则返回 0。<br>若 a 大于 b，则返回一个大于 0 的值。<br>如果数组中包含字符串则按照每项首字母在ASCII码表中的大小进行排序</p>
+        <p>JavaScript中数组排序 sort 方法的参数是一个函数，sort 的排序实现是根据该函数的返回值进行的。<br>若 a 小于 b，在排序后的数组中 a 应该出现在 b 之前，则返回一个小于 0 的值。<br>若 a 等于 b，则返回 0。<br>若 a 大于 b，则返回一个大于 0 的值。<br>如果数组中包含字符串则按照每项首字母在ASCII码表中的大小进行排序</p>
 <h3 id="自定义的排序方法-arraySort"><a href="#自定义的排序方法-arraySort" class="headerlink" title="自定义的排序方法 arraySort"></a>自定义的排序方法 arraySort</h3><h4 id="arraySort-arr-propOrders"><a href="#arraySort-arr-propOrders" class="headerlink" title="arraySort(arr, propOrders)"></a>arraySort(arr, propOrders)</h4><blockquote>
 <p> arr —- 要排序的数组<br> propOrders —- 排序条件</p>
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> arraySort(arr,propOrders) &#123;</div><div class="line">  arr.sort(<span class="keyword">function</span> (a, b) &#123;</div><div class="line">    <span class="built_in">return</span> SortByProps(a, b, propOrders)</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/11/ArraySort/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+<a id="more"></a>
+<h4 id="SortByProps-a-b-propsOrders"><a href="#SortByProps-a-b-propsOrders" class="headerlink" title="SortByProps(a, b, propsOrders)"></a>SortByProps(a, b, propsOrders)</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> SortByProps(item1, item2) &#123;</div><div class="line">  <span class="built_in">let</span> props = Array.from(arguments).slice(2)</div><div class="line"></div><div class="line">  <span class="built_in">let</span> cps = []; // 存储排序属性比较结果。</div><div class="line">  // 如果未指定排序属性，则按照全属性升序排序。</div><div class="line">  // 当<span class="built_in">return</span> 的值大于0时当前比较的两项 交换位置 小于0不换 0不变</div><div class="line">  <span class="keyword">if</span> (props[0] === undefined) &#123;</div><div class="line">    <span class="keyword">for</span> (<span class="built_in">let</span> p <span class="keyword">in</span> item1) &#123;</div><div class="line">      <span class="keyword">if</span> (item1[p] &gt; item2[p]) &#123;</div><div class="line">        cps.push(1);</div><div class="line">        <span class="built_in">break</span>; // 大于时跳出循环。</div><div class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (item1[p] === item2[p]) &#123;</div><div class="line">        cps.push(0);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        cps.push(-1);</div><div class="line">        <span class="built_in">break</span>; // 小于时跳出循环。</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">for</span> (<span class="built_in">let</span> i = 0; i &lt; props.length; i++) &#123;</div><div class="line">      <span class="built_in">let</span> prop = props[i];</div><div class="line">      <span class="keyword">for</span> (<span class="built_in">let</span> k <span class="keyword">in</span> prop) &#123;</div><div class="line">        asc = prop[k] === <span class="string">"asc"</span>;</div><div class="line">        <span class="keyword">if</span> (item1[k] &gt; item2[k]) &#123;</div><div class="line">          cps.push(asc ? 1 : -1);</div><div class="line">          <span class="built_in">break</span>;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (item1[k] === item2[k]) &#123;</div><div class="line">          cps.push(0);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">          cps.push(asc ? -1 : 1);</div><div class="line">          <span class="built_in">break</span>;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">for</span> (<span class="built_in">let</span> j = 0; j &lt; cps.length; j++) &#123;</div><div class="line">    <span class="keyword">if</span> (cps[j] === 1 || cps[j] === -1) &#123;</div><div class="line">      <span class="built_in">return</span> cps[j];</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="built_in">return</span> 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -365,136 +356,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/10/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mr.Shen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avator.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mr.Shen">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/10/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-10T22:32:17+08:00">
-                2017-09-10
-              </time>
+              <a href="/2017/09/10/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/10/hello-world/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -504,10 +387,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -515,6 +399,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -535,8 +423,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avator.jpg"
@@ -580,6 +477,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义的排序方法-arraySort"><span class="nav-number">1.</span> <span class="nav-text">自定义的排序方法 arraySort</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#arraySort-arr-propOrders"><span class="nav-number">1.1.</span> <span class="nav-text">arraySort(arr, propOrders)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SortByProps-a-b-propsOrders"><span class="nav-number">1.2.</span> <span class="nav-text">SortByProps(a, b, propsOrders)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -711,10 +624,10 @@
 
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 
