@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="前端小白一枚，使用vue框架已经差不多半年了，一直不知道数据双向绑定具体是怎么实现的，然后又是如何及时更改到视图，在网上找了一些相关的大神的文章，现在对vue的数据绑定实现略微有些明白了，写此文章只为记录，借鉴的地方都会给出说明及链接 如何监测一个对象的变化 arraySortObject.defineProperty使用 Object.defineProperty 给对象定义了一个属性 1234">
+<meta property="og:type" content="article">
+<meta property="og:title" content="observe-data &amp;&amp; mvvm">
+<meta property="og:url" content="http://yoursite.com/2017/11/22/mvvm/index.html">
+<meta property="og:site_name" content="Mr.Shen">
+<meta property="og:description" content="前端小白一枚，使用vue框架已经差不多半年了，一直不知道数据双向绑定具体是怎么实现的，然后又是如何及时更改到视图，在网上找了一些相关的大神的文章，现在对vue的数据绑定实现略微有些明白了，写此文章只为记录，借鉴的地方都会给出说明及链接 如何监测一个对象的变化 arraySortObject.defineProperty使用 Object.defineProperty 给对象定义了一个属性 1234">
+<meta property="og:image" content="http://yoursite.com/images/array.png">
+<meta property="og:updated_time" content="2017-11-22T16:15:37.418Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="observe-data &amp;&amp; mvvm">
+<meta name="twitter:description" content="前端小白一枚，使用vue框架已经差不多半年了，一直不知道数据双向绑定具体是怎么实现的，然后又是如何及时更改到视图，在网上找了一些相关的大神的文章，现在对vue的数据绑定实现略微有些明白了，写此文章只为记录，借鉴的地方都会给出说明及链接 如何监测一个对象的变化 arraySortObject.defineProperty使用 Object.defineProperty 给对象定义了一个属性 1234">
+<meta name="twitter:image" content="http://yoursite.com/images/array.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/22/mvvm/"/>
+
+
+
+
+
+  <title>observe-data && mvvm | Mr.Shen</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mr.Shen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">MyBlog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-weibo">
+          <a href="http://weibo.com/3122657741/profile?rightmod=1&wvr=6&mod=personinfo" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-weibo"></i> <br />
+            
+            Weibo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/shenlll" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            GitHub
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="https://shenlll.github.io/pic-demo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tag"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/22/mvvm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Shen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.Shen">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">observe-data && mvvm</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-22T23:02:00+08:00">
+                2017-11-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前端小白一枚，使用vue框架已经差不多半年了，一直不知道数据双向绑定具体是怎么实现的，然后又是如何及时更改到视图，在网上找了一些相关的大神的文章，现在对vue的数据绑定实现略微有些明白了，写此文章只为记录，借鉴的地方都会给出说明及链接</p>
+<h1 id="如何监测一个对象的变化-arraySort"><a href="#如何监测一个对象的变化-arraySort" class="headerlink" title="如何监测一个对象的变化 arraySort"></a>如何监测一个对象的变化 arraySort</h1><h2 id="Object-defineProperty"><a href="#Object-defineProperty" class="headerlink" title="Object.defineProperty"></a>Object.defineProperty</h2><p>使用 Object.defineProperty 给对象定义了一个属性</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">Object.defineProperty(obj, <span class="string">'aa'</span>, &#123;</div><div class="line">    // <span class="string">'aa'</span> 是对象的key值，如果是数组的话则是索引</div><div class="line">    value: <span class="string">'xxx'</span>,        // 属性的值</div><div class="line">    writable: <span class="literal">true</span>,        // 是否可写</div><div class="line">    enumerable: <span class="literal">true</span>,    // 是否能够通过<span class="keyword">for</span> <span class="keyword">in</span> 枚举</div><div class="line">    configurable: <span class="literal">true</span>    // 是否可使用 delete删除</div><div class="line">&#125;)</div><div class="line">或者 定义一对getter/setter</div><div class="line"></div><div class="line">Object.defineProperty(obj, <span class="string">'bb'</span>, &#123;</div><div class="line">    get: <span class="function"><span class="title">function</span></span>()&#123;</div><div class="line">        <span class="built_in">return</span> <span class="string">'xx'</span>;</div><div class="line">    &#125;,</div><div class="line">    <span class="built_in">set</span>: <span class="keyword">function</span>(newVal)&#123;</div><div class="line">        ·····</div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>我们可以遍历想要观察的对象，通过Object.defineProperty把属性转换成getter/setter 这样我们在修改对象的值时就会触发setter，在setter里触发回调通知<br><a id="more"></a></p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">const OP = Object.prototype;</div><div class="line">/*</div><div class="line"> *  需要重写的数组方法 OAR 是 overrideArrayMethod 的缩写</div><div class="line"> */</div><div class="line">const OAM = [<span class="string">'push'</span>, <span class="string">'pop'</span>, <span class="string">'shift'</span>, <span class="string">'unshift'</span>, <span class="string">'splice'</span>, <span class="string">'sort'</span>, <span class="string">'reverse'</span>];</div><div class="line"></div><div class="line">class Observer &#123;</div><div class="line">  constructor(obj, callback) &#123;</div><div class="line">    // obj 是要监听的对象</div><div class="line">    // callback 当对象改变时触发的回调通知</div><div class="line">    <span class="keyword">if</span> (OP.toString.call(obj) !== <span class="string">'[object Object]'</span>) &#123;</div><div class="line">      console.error(<span class="string">'This parameter must be an object：'</span> + obj);</div><div class="line">    &#125;</div><div class="line">    this.<span class="variable">$callback</span> = callback;</div><div class="line">    this.observe(obj);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  // path 路径 就是变化的字段的路径</div><div class="line">  observe(obj, path) &#123;</div><div class="line">    // 如果发现 监测的对象是数组的话就要调用 overrideArrayProto 方法</div><div class="line">    <span class="keyword">if</span> (OP.toString.call(obj) === <span class="string">'[object Array]'</span>) &#123;</div><div class="line">      this.overrideArrayProto(obj, path);</div><div class="line">    &#125;</div><div class="line">    Object.keys(obj).forEach(<span class="keyword">function</span>(key, index, keyArray) &#123;</div><div class="line">      var oldVal = obj[key];</div><div class="line">      var pathArray = path &amp;&amp; path.slice(0)</div><div class="line">      pathArray ? pathArray.push(key) : pathArray = [key]  </div><div class="line">      Object.defineProperty(obj, key, &#123;</div><div class="line">        <span class="function"><span class="title">get</span></span> () &#123;</div><div class="line">          <span class="built_in">return</span> oldVal;</div><div class="line">        &#125;,</div><div class="line">        <span class="built_in">set</span>: (<span class="keyword">function</span>(newVal) &#123;</div><div class="line">          <span class="keyword">if</span> (oldVal !== newVal) &#123;</div><div class="line">            // 当新值时对象或数组是继续调用observe监听其子属性的值</div><div class="line">            <span class="keyword">if</span> (OP.toString.call(newVal) === <span class="string">'[object Object]'</span> || OP.toString.call(newVal) === <span class="string">'[object Array]'</span>) &#123;</div><div class="line">              this.observe(newVal, pathArray);</div><div class="line">            &#125;</div><div class="line">            // 当触发setter时 进行回调通知,改变oldVal</div><div class="line">            this.<span class="variable">$callback</span>(newVal, oldVal, pathArray);</div><div class="line">            oldVal = newVal;</div><div class="line">          &#125;</div><div class="line">        &#125;).<span class="built_in">bind</span>(this) //改变this指向——&gt;Observer</div><div class="line">      &#125;);</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (OP.toString.call(obj[key]) === <span class="string">'[object Object]'</span> || OP.toString.call(obj[key]) === <span class="string">'[object Array]'</span>) &#123;</div><div class="line">        this.observe(obj[key], pathArray);</div><div class="line">      &#125;</div><div class="line">    &#125;, this);</div><div class="line"></div><div class="line">  &#125;</div><div class="line">  // 重写原生js的方法是不应该考虑的，换种思路考虑问题，在arr与 Array.prototype 之间的链条中添加了一环 fakePrototype (假的原型)，在 fakePrototype 方法中再去调用真正的Array原型上对应的方法，同时监听变化，见下图</div><div class="line">  overrideArrayProto(array, path) &#123;</div><div class="line">    // 保存原始 Array 原型</div><div class="line">    var originalProto = Array.prototype,</div><div class="line">      // 通过 Object.create 方法创建一个对象，该对象的原型就是Array.prototype</div><div class="line">      overrideProto = Object.create(Array.prototype),</div><div class="line">      self = this,</div><div class="line">      result;</div><div class="line">    // 遍历要重写的数组方法</div><div class="line">    OAM.forEach(<span class="keyword">function</span>(key, index, array) &#123;</div><div class="line">      var method = key,</div><div class="line">        oldArray = [];</div><div class="line">      // 使用 Object.defineProperty 给 overrideProto 添加属性，属性的名称是对应的数组函数名，值是函数</div><div class="line">      Object.defineProperty(overrideProto, method, &#123;</div><div class="line">        value: <span class="function"><span class="title">function</span></span>() &#123;</div><div class="line">          // this 指向调用的数组</div><div class="line">          oldArray = this.slice(0);</div><div class="line">          // console.log(this.slice(0),this, arguments);</div><div class="line">          var arg = Array.from(arguments)</div><div class="line">          // 调用数组原型对应的方法</div><div class="line">          result = originalProto[method].apply(this, arg);</div><div class="line">          // 对新的数组进行监测</div><div class="line">          self.observe(this, path);</div><div class="line">          // 执行回调</div><div class="line">          self.<span class="variable">$callback</span>(this, oldArray, path);</div><div class="line">          <span class="built_in">return</span> result;</div><div class="line">        &#125;,</div><div class="line">        writable: <span class="literal">true</span>,</div><div class="line">        enumerable: <span class="literal">false</span>,</div><div class="line">        configurable: <span class="literal">true</span></div><div class="line">      &#125;);</div><div class="line">    &#125;, this);</div><div class="line">    // 最后 让该数组实例的 __proto__ 属性指向 假的原型 overrideProto</div><div class="line">    // array.__proto__ = overrideProto;</div><div class="line">    Object.setPrototypeOf(array, overrideProto)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">var callback = <span class="keyword">function</span>(newVal, oldVal, path)&#123;</div><div class="line">    console.log( newVal ,oldVal , path);</div><div class="line">&#125;</div><div class="line">new Observer(data, callback)</div></pre></td></tr></table></figure>
+<p><img src="/images/array.png" alt="fakePrototype假的原型"><br><a href="http://hcysun.me/2016/04/28/JavaScript%E5%AE%9E%E7%8E%B0MVVM%E4%B9%8B%E6%88%91%E5%B0%B1%E6%98%AF%E6%83%B3%E7%9B%91%E6%B5%8B%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8F%98%E5%8C%96/" target="_blank" rel="external">点击此处前往原文</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/11/ArraySort/" rel="next" title="一种数组多项排序的实现">
+                <i class="fa fa-chevron-left"></i> 一种数组多项排序的实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.jpg"
+               alt="Mr.Shen" />
+          <p class="site-author-name" itemprop="name">Mr.Shen</p>
+           
+              <p class="site-description motion-element" itemprop="description">也许是真的无聊</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何监测一个对象的变化-arraySort"><span class="nav-number">1.</span> <span class="nav-text">如何监测一个对象的变化 arraySort</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-defineProperty"><span class="nav-number">1.1.</span> <span class="nav-text">Object.defineProperty</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">1.2.</span> <span class="nav-text">代码实现</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mr.Shen</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
