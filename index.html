@@ -199,7 +199,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -209,7 +209,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -295,7 +295,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-10T20:02:10+08:00">
                 2018-04-10
@@ -336,102 +336,14 @@
 
       
         
-          
-            <p>CSS网格布局（又名“网格”）是一个二维的基于网格的布局系统，其目的只在于完全改变我们设计基于网格的用户界面的方式。<br>本篇文章主要介绍其相关的属性</p>
-<p>Grid Container 的全部属性</p>
-<ul>
-<li>display</li>
-<li>grid-template-columns</li>
-<li>grid-template-rows</li>
-<li>grid-template-areas</li>
-<li>grid-template</li>
-<li>grid-column-gap</li>
-<li>grid-row-gap</li>
-<li>grid-gap</li>
-<li>justify-items</li>
-<li>align-items</li>
-<li>justify-content</li>
-<li>align-content</li>
-<li>grid-auto-columns</li>
-<li>grid-auto-rows</li>
-<li>grid-auto-flow</li>
-<li>grid</li>
-</ul>
-<p>Grid Items 的全部属性</p>
-<ul>
-<li>grid-column-start</li>
-<li>grid-column-end</li>
-<li>grid-row-start</li>
-<li>grid-row-end</li>
-<li>grid-column</li>
-<li>grid-row</li>
-<li>grid-area</li>
-<li>justify-self</li>
-<li>align-self</li>
-</ul>
-<h3 id="grid-container"><a href="#grid-container" class="headerlink" title="grid container"></a>grid container</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">display: grid | inline-grid;</div></pre></td></tr></table></figure>
-<p>注: column, float, clear, 和 vertical-align 元素对网格容器不起作用</p>
-<h3 id="grid-template-rows-grid-template-columns"><a href="#grid-template-rows-grid-template-columns" class="headerlink" title="grid-template-rows | grid-template-columns"></a>grid-template-rows | grid-template-columns</h3><p>属性值：</p>
-<ul>
-<li>track-size: 可以是一个长度、百分比或者是网格中自由空间的一小部分(使用fr单位)</li>
-<li>line-name: 你选择的任意名称 </li>
-<li>subgrid - 如果你的网格容器本身就是一个网格项(即嵌套网格)，你可以使用此属性指定行和列的大小继承于父元素而不是自身指定。<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">grid-template-columns: 40px 50px auto 50px 40px;</div><div class="line"></div><div class="line">grid-template-columns: [first] 40px [line2] 50px [line3] auto [col4-start] 50px [five] 40px [end];</div><div class="line"></div><div class="line">grid-template-rows: [row1-start] 25% [row1-end] 100% [third-line] auto [last-line];</div><div class="line"></div><div class="line">grid-template-rows: [row1-start] 25% [row1-end row2-start] 25% [row2-end]</div><div class="line"></div><div class="line">grid-template-columns: repeat(3, 20px [col-start]) 5%</div><div class="line"></div><div class="line">grid-template-columns: 1fr 1fr 1fr;</div><div class="line"></div><div class="line">grid-template-columns: repeat(auto-fill, 100px);</div><div class="line"></div><div class="line">grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>fr单位允许你将一个轨道大小设置为网格容器内自由空间的一小部分<br>auto-fill 关键词创建了许多与网格容器相匹配的轨道，而不会导致网格溢出, 可以让网格项目填充网格容器<br>auto-fit关键词与auto-fill有点类似，只是在网格项放置之后，它只会在需要时创建尽可能多的轨道，而重复的空轨道会堆叠在一起（合并）</p>
-<h3 id="grid-template-areas"><a href="#grid-template-areas" class="headerlink" title="grid-template-areas"></a>grid-template-areas</h3><p>属性值：</p>
-<ul>
-<li>grid-area-name: 使用grid-area属性定义网格区域名称</li>
-<li>. 句点表示一个空单元格 </li>
-<li>none: 无网格区域被定义</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">.container&#123;</div><div class="line">  grid-template-areas: </div><div class="line">    <span class="string">"header header header header"</span> </div><div class="line">    <span class="string">"main main . sidebar"</span> </div><div class="line">    <span class="string">"footer footer footer footer"</span> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="grid-area"><a href="#grid-area" class="headerlink" title="grid-area"></a>grid-area</h3><p>属性值：</p>
-<ul>
-<li>name: 你所定义的名称</li>
-<li>row-start / column-start / row-end / column-end: 可以为数字或者名称<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">.item<span class="_">-d</span> &#123;</div><div class="line">  grid-area: header </div><div class="line">&#125;</div><div class="line">.item<span class="_">-d</span> &#123;</div><div class="line">  grid-area: 1 / col4-start / last-line / 6</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="grid-gap-grid-column-gap-grid-row-gap"><a href="#grid-gap-grid-column-gap-grid-row-gap" class="headerlink" title="grid-gap: grid-column-gap grid-row-gap"></a>grid-gap: grid-column-gap grid-row-gap</h3><p>指定网格线的大小。你可以把它想像成在行/列之间设置间距宽度。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">.container&#123; </div><div class="line">  grid-column-gap : 10px;</div><div class="line">  grid-row-gap: 10px;</div><div class="line">  grid-gap: 10px 10px;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="grid-auto-rows-grid-auto-columns"><a href="#grid-auto-rows-grid-auto-columns" class="headerlink" title="grid-auto-rows, grid-auto-columns"></a>grid-auto-rows, grid-auto-columns</h3><p>设置这些隐式轨道的宽度:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">.container&#123; </div><div class="line">  grid-template-columns: 60px 60px; </div><div class="line">  grid-template-rows: 90px 90px;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="grid-auto-flow"><a href="#grid-auto-flow" class="headerlink" title="grid-auto-flow"></a>grid-auto-flow</h3><p>如果你不显式的在网格中放置网格项，自动布局算法就会自动踢出此网格项。此属性用来控制自动布局算法的工作原理。<br>属性值：</p>
-<ul>
-<li>row: 告诉自动布局算法填充每一行，必要时添加新行 </li>
-<li>column: 告诉自动布局算法填充每一列，必要时添加新列 </li>
-<li>dense: 告诉自动布局算法试图填补网格中之前较小的网格项留有的空白 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grid-auto-flow: row | column | row dense | column dense</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="grid-column-start-grid-column-end-grid-row-start-grid-row-end"><a href="#grid-column-start-grid-column-end-grid-row-start-grid-row-end" class="headerlink" title="grid-column-start/grid-column-end/grid-row-start/grid-row-end"></a>grid-column-start/grid-column-end/grid-row-start/grid-row-end</h3><p>使用特定的网格线确定网格项在网格内的位置。</p>
-<p>属性值：</p>
-<ul>
-<li>line: 可以是一个数字来引用相应编号的网格线，或者使用名称引用相应命名的网格线 </li>
-<li>span number: 网格项包含指定数量的网格轨道 </li>
-<li>span name: 网格项包含指定名称网格项的网格线之前的网格轨道</li>
-<li>auto: 表明自动定位，自动跨度或者默认跨度之一</li>
-</ul>
-<p>如果没有声明grid-column-end/grid-row-end属性，默认情况下网格项的跨度为1<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">grid-column-start: &lt;number&gt; | &lt;name&gt; | span &lt;number&gt; | span &lt;name&gt; | auto </div><div class="line">grid-column-end: &lt;number&gt; | &lt;name&gt; | span &lt;number&gt; | span &lt;name&gt; | auto </div><div class="line">grid-row-start: &lt;number&gt; | &lt;name&gt; | span &lt;number&gt; | span &lt;name&gt; | auto </div><div class="line">grid-row-end: &lt;number&gt; | &lt;name&gt; | span &lt;number&gt; | span &lt;name&gt; | auto</div></pre></td></tr></table></figure></p>
-<h3 id="align-content-justify-content"><a href="#align-content-justify-content" class="headerlink" title="align-content | justify-content"></a>align-content | justify-content</h3><p>当你使用px这种非响应式的单位对你的网格项进行大小设置时，就有可能出现一种情况–你的网格大小可能小于其网格容器的大小。在这种情况下，你就可以设置网格容器内网格的对齐方式。(相反于justify-content属性定义的沿列轴对齐)。</p>
-<ul>
-<li>start: 网格与网格容器的顶端对齐 </li>
-<li>end: 网格与网格容器的底部对齐</li>
-<li>center: 网格处于网格容器的中间 </li>
-<li>stretch: 调整网格项的大小，使其高度填充整个网格容器 </li>
-<li>space-around: 在网格项之间设置偶数个空格间隙，其最边缘间隙大小为中间空格空隙大小的一半</li>
-<li>space-between: 在网格项之间设置偶数个空格间隙，其最边缘不存在空格间隙 </li>
-<li>space-evenly: 在网格项之间设置偶数个空格间隙，同样适用于最边缘区域 </li>
-</ul>
-<h3 id="align-items-justify-item"><a href="#align-items-justify-item" class="headerlink" title="align-items | justify-item"></a>align-items | justify-item</h3><p>沿行轴对齐网格项中的内容(相反于justify-item属性定义的沿列轴对齐)。此值适用于容器内所有的网格项。 </p>
-<ul>
-<li>start: 内容与网格区域的顶端对齐 </li>
-<li>end: 内容与网格区域的底部对齐</li>
-<li>center: 内容处于网格区域的中间位置</li>
-<li>stretch: 内容高度占据整个网格区域空间(默认值)<br>这也可以使用justify-self属性对各个网格项进行设置。</li>
-</ul>
-<h3 id="minmax"><a href="#minmax" class="headerlink" title="minmax()"></a>minmax()</h3><p>函数接受两个参数，一个最小值和一个最大值。</p>
-<p>minmax(min, max) 如果定义的最大值小于最小值，它将会被忽略，函数会被视为只设置了一个最小值。</p>
-<p>minmax()函数接受六种类型的值：<br>长度值 | length | 百分比值 | 弹性值（fr） | max-content | min-content | auto </p>
-
-          
+          <p>CSS网格布局（又名“网格”）是一个二维的基于网格的布局系统，其目的只在于完全改变我们设计基于网格的用户界面的方式。<br>本篇文章主要介绍其相关的属性<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/10/gird/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -507,7 +419,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-22T23:02:00+08:00">
                 2017-11-22
@@ -555,7 +467,7 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/11/22/mvvm/#more" rel="contents">
-              Weiterlesen &raquo;
+              Read more &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -634,7 +546,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-11T23:56:15+08:00">
                 2017-09-11
@@ -683,7 +595,7 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/09/11/arraySort/#more" rel="contents">
-              Weiterlesen &raquo;
+              Read more &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -762,7 +674,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-10T22:32:17+08:00">
                 2017-09-10
@@ -807,7 +719,7 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/09/10/hello-world/#more" rel="contents">
-              Weiterlesen &raquo;
+              Read more &raquo;
             </a>
           </div>
           <!--/noindex-->
@@ -891,7 +803,7 @@
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
                 <span class="site-state-item-count">4</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -945,7 +857,7 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
