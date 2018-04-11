@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="无渲染组件是一个不需要渲染任何自己的HTML的组件。相反，它只管理状态和行为。它会暴露一个单独的作用域，让父组件或消费者完全控制应该渲染的内容。 无渲染组件可以在没有任何额外的元素情况之下精确的渲染你所传递的内容。 表现和行为分离由于无渲染组件只处理状态和行为，所以它们不会对设计或布局强加任何的决策。这意味弟，如果你能够找到一种方法，将所有的行为从UI组件（比如文章开头的标签输入控件）中移出，将将">
+<meta property="og:type" content="article">
+<meta property="og:title" content="No-rendering-component">
+<meta property="og:url" content="http://yoursite.com/2018/04/11/no-rendering-component/index.html">
+<meta property="og:site_name" content="Mr.Shen">
+<meta property="og:description" content="无渲染组件是一个不需要渲染任何自己的HTML的组件。相反，它只管理状态和行为。它会暴露一个单独的作用域，让父组件或消费者完全控制应该渲染的内容。 无渲染组件可以在没有任何额外的元素情况之下精确的渲染你所传递的内容。 表现和行为分离由于无渲染组件只处理状态和行为，所以它们不会对设计或布局强加任何的决策。这意味弟，如果你能够找到一种方法，将所有的行为从UI组件（比如文章开头的标签输入控件）中移出，将将">
+<meta property="og:updated_time" content="2018-04-11T13:20:11.971Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="No-rendering-component">
+<meta name="twitter:description" content="无渲染组件是一个不需要渲染任何自己的HTML的组件。相反，它只管理状态和行为。它会暴露一个单独的作用域，让父组件或消费者完全控制应该渲染的内容。 无渲染组件可以在没有任何额外的元素情况之下精确的渲染你所传递的内容。 表现和行为分离由于无渲染组件只处理状态和行为，所以它们不会对设计或布局强加任何的决策。这意味弟，如果你能够找到一种方法，将所有的行为从UI组件（比如文章开头的标签输入控件）中移出，将将">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/11/no-rendering-component/"/>
+
+
+
+
+
+  <title>No-rendering-component | Mr.Shen</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mr.Shen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">MyBlog</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-weibo">
+          <a href="http://weibo.com/3122657741/profile?rightmod=1&wvr=6&mod=personinfo" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-weibo"></i> <br />
+            
+            Weibo
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-github">
+          <a href="https://github.com/shenlll" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-github"></i> <br />
+            
+            GitHub
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/no-rendering-component/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mr.Shen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avator.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.Shen">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">No-rendering-component</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-11T20:56:22+08:00">
+                2018-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>无渲染组件是一个不需要渲染任何自己的HTML的组件。相反，它只管理状态和行为。它会暴露一个单独的作用域，让父组件或消费者完全控制应该渲染的内容。</p>
+<p>无渲染组件可以在没有任何额外的元素情况之下精确的渲染你所传递的内容。</p>
+<h3 id="表现和行为分离"><a href="#表现和行为分离" class="headerlink" title="表现和行为分离"></a>表现和行为分离</h3><p>由于无渲染组件只处理状态和行为，所以它们不会对设计或布局强加任何的决策。这意味弟，如果你能够找到一种方法，将所有的行为从UI组件（比如文章开头的标签输入控件）中移出，将将其转换成一个无组件的组件，那么你就可以重用无渲染组件来实现任何布局效果的标签输入控件。</p>
+<p>在Vue中，slot是一个组件中的占位符元素，由父或者消费者传递的内容来替代<br>作用域插槽（slot-scope）和常规的插槽（slot）一样，但有能力将参数从子组件传递到父组件或消费者上。<br>常规的slot就像将HTML传递给组件，作用域插槽类似于传递接受数据并返回HTML的回调。</p>
+<a id="more"></a>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><blockquote>
+<p>在单文件组件中构建一个标签输入控件</p>
+</blockquote>
+<p>这是一个无渲染的组件 只负责处理状态和行为</p>
+<p>TagInput.vue<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line"><span class="built_in">export</span> default &#123;</div><div class="line">  props: [<span class="string">'value'</span>],</div><div class="line">  <span class="function"><span class="title">data</span></span>() &#123;</div><div class="line">    <span class="built_in">return</span> &#123;</div><div class="line">      newTag: <span class="string">''</span></div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  methods: &#123;</div><div class="line">    removeTag: <span class="keyword">function</span>(tag) &#123;</div><div class="line">      this.<span class="variable">$emit</span>(<span class="string">'input'</span>, this.value.filter(t =&gt; t !== tag))</div><div class="line">    &#125;,</div><div class="line">    addTag: <span class="function"><span class="title">function</span></span>() &#123;</div><div class="line">      <span class="keyword">if</span> (this.newTag.trim().length === 0 || this.value.includes(this.newTag.trim())) &#123;</div><div class="line">        <span class="built_in">return</span></div><div class="line">      &#125;</div><div class="line">      this.<span class="variable">$emit</span>(<span class="string">'input'</span>, [...this.value, this.newTag.trim()])</div><div class="line">      this.newTag = <span class="string">''</span></div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  <span class="function"><span class="title">render</span></span>() &#123;</div><div class="line">    <span class="built_in">return</span> this.<span class="variable">$scopedSlots</span>.default(&#123;</div><div class="line">      tags: this.value,</div><div class="line">      removeTag: this.removeTag,</div><div class="line">      inputAttrs: &#123;</div><div class="line">        value: this.newTag</div><div class="line">      &#125;,</div><div class="line">      inputEvents: &#123;</div><div class="line">        input: (e) =&gt; &#123;</div><div class="line">          this.newTag = e.target.value</div><div class="line">        &#125;,</div><div class="line">        keydown: (e) =&gt; &#123;</div><div class="line">          <span class="keyword">if</span> (e.keyCode === 13) &#123;</div><div class="line">            e.preventDefault()</div><div class="line">            this.addTag()</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;,</div><div class="line">      addTag: this.addTag</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line">&lt;style&gt;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure></p>
+<p>创建自己的容器组件<br>TagsInputContainer</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">&lt;template&gt;</div><div class="line">  &lt;div class=<span class="string">"container"</span>&gt;</div><div class="line">    &lt;tag-input :value=<span class="string">"value"</span> @input=<span class="string">"(tags) =&gt; &#123;<span class="variable">$emit</span>('input', tags)&#125;"</span>&gt;</div><div class="line">      &lt;div slot-scope=<span class="string">"&#123; tags, removeTag, inputAttrs, inputEvents, addTag&#125;"</span> class=<span class="string">"tags-input"</span>&gt;</div><div class="line">        &lt;span class=<span class="string">"tags-input-tag"</span> v-for=<span class="string">"(tag, index) in tags"</span> :key=<span class="string">"index"</span>&gt; </div><div class="line">          &lt;span&gt;&#123;&#123; tag &#125;&#125;&lt;/span&gt;</div><div class="line">          &lt;button <span class="built_in">type</span>=<span class="string">"button"</span> class=<span class="string">"tags-input-remove"</span> @click=<span class="string">"removeTag(tag)"</span>&gt;&amp;<span class="built_in">times</span>;&lt;/button&gt; </div><div class="line">        &lt;/span&gt;</div><div class="line">        &lt;input </div><div class="line">          @keydown.enter.prevent=<span class="string">"addTag"</span> </div><div class="line">          v-on=<span class="string">"inputEvents"</span></div><div class="line">          v-bind=<span class="string">"inputAttrs"</span></div><div class="line">          class=<span class="string">"tags-input-text"</span> </div><div class="line">          placeholder=<span class="string">"Add tag..."</span>&gt;</div><div class="line">      &lt;/div&gt;</div><div class="line">    &lt;/tag-input&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">&lt;/template&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">import TagInput from <span class="string">'./TagInput'</span></div><div class="line"><span class="built_in">export</span> default &#123;</div><div class="line">  props: [<span class="string">'value'</span>],</div><div class="line">  components: &#123;</div><div class="line">    TagInput</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;style scoped&gt;</div><div class="line"></div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
+<p>此时在App.vue中<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">&lt;template&gt;</div><div class="line">  &lt;div&gt;</div><div class="line">    ...</div><div class="line">    &lt;tags-input-container v-model=<span class="string">"tags"</span>/&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">&lt;/template&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">import TagsInputContainer from <span class="string">'./components/TagsInputContainer'</span></div><div class="line"><span class="built_in">export</span> default &#123;</div><div class="line">  <span class="function"><span class="title">data</span></span> () &#123;</div><div class="line">    <span class="built_in">return</span> &#123;</div><div class="line">      tags: [<span class="string">'Testing'</span>, <span class="string">'Desing'</span>]</div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  components: &#123;</div><div class="line">    TagsInputContainer</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;style scoped&gt;</div><div class="line"></div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>如果根据需求需要不同的外观设计但功能几乎一样，使用无渲染组件这样就可以省去写大量重复代码。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/10/gird/" rel="next" title="CSS Grid布局">
+                <i class="fa fa-chevron-left"></i> CSS Grid布局
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avator.jpg"
+               alt="Mr.Shen" />
+          <p class="site-author-name" itemprop="name">Mr.Shen</p>
+           
+              <p class="site-description motion-element" itemprop="description">也许是真的无聊</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">Artikel</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#表现和行为分离"><span class="nav-number">1.</span> <span class="nav-text">表现和行为分离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例"><span class="nav-number">2.</span> <span class="nav-text">案例</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mr.Shen</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
